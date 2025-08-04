@@ -149,12 +149,10 @@ Vers votre dossier de documents :
 
 ```
 rag-agent-n8n/
-├── README.md                 # Ce fichier
+├── README.md                # Ce fichier
 ├── rag_agent.json           # Workflow n8n principal
-├── docs/
-│   └── guide_complet.pdf    # Guide détaillé
-├── examples/
-│   └── sample_documents/    # Documents d'exemple
+├── guide_rag_agent/         # Guide détaillé
+├── LICENSE/
 └── .gitignore
 ```
 
