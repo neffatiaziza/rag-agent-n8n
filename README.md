@@ -236,10 +236,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 Si vous rencontrez des problèmes :
 
-1. Consultez la [documentation complète](docs/guide_complet.pdf)
-2. Ouvrez une [issue GitHub](https://github.com/votre-username/rag-agent-n8n/issues)
-3. Rejoignez notre [Discord](https://discord.gg/votre-lien) pour la communauté
-
+1. Consultez le [guide complet](guide_rag_agent.pdf) 
 ---
 
 ⭐ **N'oubliez pas de donner une étoile si ce projet vous aide !**
