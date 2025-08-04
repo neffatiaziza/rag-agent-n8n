@@ -1,0 +1,518 @@
+{
+  "name": "version_java_md_xml copy",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -500,
+        500
+      ],
+      "id": "829ad497-063e-41e1-837a-15c9226bb593",
+      "name": "When chat message received",
+      "webhookId": "c9098671-47a6-435e-a8c4-bb341011acb7"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an AI assistant that answers questions using a knowledge base stored in Qdrant. You must ALWAYS cite your sources and provide cross-references between related documents.\nEnhanced Response Requirements:\n\nMulti-document Analysis: For complex questions, search across ALL relevant documents\nCross-referencing: When citing information, link related concepts from different documents\nProcess Flow: For process questions, show the complete flow across documents\nDocumentation Integration: Connect different processes with their associated standards and guidelines\n\nMandatory Response Format:\n1. Complete Answer\n[Provide comprehensive answer with cross-document insights]\n2. Cross-Document Citations\nProcess Flow:\n\nStep 1: [Document A] - [specific content]\nStep 2: [Document B] - [specific content]\nStep 3: [Document C] - [specific content]\n\n3. Standards Referenced\n[List applicable standards from your organization's standard documents]\n4. Source Metadata\nPrimary Sources:\n\nFile: [file_name] | Chunk: [chunk_id] | Score: [score]\n\nSupporting Sources:\n\nFile: [file_name] | Chunk: [chunk_id] | Score: [score]\n\nSpecial Instructions for Process Questions:\n\nAlways check process documentation, review procedures, and standard guidelines\nShow the relationship between different workflow steps and quality requirements\nProvide specific examples from the standards when relevant\nCross-reference related procedures and dependencies"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        500
+      ],
+      "id": "873d9a3a-14f6-4298-92a0-768557d20dfc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -220,
+        700
+      ],
+      "id": "235fe98b-be95-4ce8-adfa-ad95f9fb1010",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        340,
+        400
+      ],
+      "id": "736b34d7-3c33-4058-9cdf-a7e086a445c0",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "pq0LsGioUkzLtRl1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $('Extract from File1').item.json.data }}",
+        "textSplittingMode": "custom",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "source",
+                "value": "={{ $('Extract from File1').item.json.fileName }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        400
+      ],
+      "id": "600490d2-e7c6-456b-bdfb-4e56de14ef81",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        860
+      ],
+      "id": "9b9e63a0-ac8c-4f18-a355-32dbfd5d0429",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "A7Thjsgv1nTYzrXH",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -380,
+        700
+      ],
+      "id": "550208ae-51b7-49c7-8e6f-272c781a1bf8",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "A7Thjsgv1nTYzrXH",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        200
+      ],
+      "id": "934342a2-bacd-4dbc-8750-d49ed358c4ee",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "D:/Stage_Talan_2025/fist-tast-documentation-master/**/*.*",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        200
+      ],
+      "id": "135a4a84-d549-46fe-b35c-82e6786b0b7c",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "chunkSize": 800,
+        "chunkOverlap": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        580,
+        540
+      ],
+      "id": "2ea477a9-f6cb-424b-90d5-d803e55eb7f2",
+      "name": "Token Splitter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ea53db7b-d0b7-44f6-8260-ed0854242ff2",
+                    "leftValue": "={{ $json.fileName.split('.').pop().toLowerCase() }}",
+                    "rightValue": "md",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "abd06a33-d318-419c-b1f4-5ba4d822be04",
+                    "leftValue": "={{ $json.fileName.split('.').pop().toLowerCase() }}",
+                    "rightValue": "java",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7285c771-730d-4318-a1bd-b2cf244ef2ca",
+                    "leftValue": "={{ $json.fileName.split('.').pop().toLowerCase() }}",
+                    "rightValue": "xml",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -220,
+        200
+      ],
+      "id": "bf3d9594-5a66-4c00-815c-d884e18b49fc",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "encoding": "utf8",
+          "keepSource": "both"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        40,
+        200
+      ],
+      "id": "63bd0b6b-dd4d-4b63-8707-ddb58d5a27fb",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "options": {
+          "fileName": "={{ $json.fileName }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        200
+      ],
+      "id": "a600d5e9-7027-4c96-8031-06085d6f22d2",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "test_rag",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        420,
+        200
+      ],
+      "id": "5b145ec3-9688-4ecf-89ce-8671e300fbb2",
+      "name": "Qdrant Vector Store",
+      "credentials": {
+        "qdrantApi": {
+          "id": "hOpYFWh8widwiqQ1",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Recherche dans la base de documents pour répondre aux questions",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "test_rag",
+          "mode": "list",
+          "cachedResultName": "test_rag"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        -100,
+        720
+      ],
+      "id": "b51b7377-bdf9-4234-9d15-a44f4d61cfa1",
+      "name": "Qdrant Vector Store1",
+      "credentials": {
+        "qdrantApi": {
+          "id": "hOpYFWh8widwiqQ1",
+          "name": "QdrantApi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "a8dcebec-8ff8-4b46-b117-1ab7e04b3a5c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4be9ccc7d15f9e28c9cf8a3c6c136a77f9bc10074704736f8de3a6de3550c3f5"
+  },
+  "id": "w61gHch8pSpKMvOE",
+  "tags": []
+}
