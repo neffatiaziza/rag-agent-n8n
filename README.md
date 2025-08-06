@@ -1,242 +1,248 @@
-# 🤖 Agent RAG avec n8n - Système de Q&A Intelligent sur Documents
+# 🤖 RAG Agent with n8n – Intelligent Q&A System on Documents
 
 [![n8n](https://img.shields.io/badge/n8n-Workflow-FF6D6D?style=flat-square&logo=n8n)](https://n8n.io/)
 [![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-DC382C?style=flat-square&logo=qdrant)](https://qdrant.tech/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o%20mini-412991?style=flat-square&logo=openai)](https://openai.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js)](https://nodejs.org/)
 
-Un système RAG (Retrieval-Augmented Generation) complet construit avec n8n pour indexer automatiquement vos documents et répondre intelligemment aux questions avec citations des sources.
-## 📚 Sommaire
+A complete RAG (Retrieval-Augmented Generation) system built with n8n to automatically index your documents and intelligently answer questions with source citations.
 
-1. [Fonctionnalités](#-fonctionnalités)
+## 📚 Table of Contents
+
+1. [Features](#-features)
 2. [Architecture](#-architecture)
-3. [Installation Rapide](#-installation-rapide)
+3. [Quick Installation](#-quick-installation)
 4. [Configuration](#-configuration)
-5. [Utilisation](#-utilisation)
-6. [Structure du projet](#-structure-du-projet)
-7. [Workflow détaillé](#-workflow-détaillé)
-8. [Personnalisation](#-personnalisation)
-9. [Dépannage](#-dépannage)
-10. [Métriques et performances](#-métriques-et-performances)
+5. [Usage](#-usage)
+6. [Project Structure](#-project-structure)
+7. [Detailed Workflow](#-detailed-workflow)
+8. [Customization](#-customization)
+9. [Troubleshooting](#-troubleshooting)
+10. [Metrics & Performance](#-metrics--performance)
 11. [Contribution](#-contribution)
-12. [Licence](#-licence)
-13. [Remerciements](#-remerciements)
+12. [License](#-license)
+13. [Acknowledgments](#-acknowledgments)
 14. [Support](#-support)
 
-## 🎯 Fonctionnalités
 
-- **Ingestion automatique** de documents (PDF, TXT, DOCX, MD, Java, XML)
-- **Recherche sémantique** dans une base vectorielle Qdrant
-- **Chat intelligent** avec citations automatiques des sources
-- **Interface conversationnelle** intégrée
-- **Mémoire de conversation** pour un contexte persistant
-- **Analyse multi-documents** avec références croisées
+## 🎯 Features
+
+- **Automatic ingestion** of documents (PDF, TXT, DOCX, MD, Java, XML)
+- **Semantic search** using a Qdrant vector database
+- **Smart chat** with automatic source citations
+- **Built-in conversational interface**
+- **Conversation memory** for persistent context
+- **Multi-document analysis** with cross-referencing
 
 ## 🏗️ Architecture
 
+
 ```
-📁 Documents locaux
+📁 Local Documents
     ↓
-🔄 n8n Workflow d'ingestion
+🔄 n8n Ingestion Workflow
     ↓
 🗃️ Qdrant Vector Store
     ↓
-💬 Interface Chat
+💬 Chat Interface
     ↓
-🤖 Agent RAG + OpenAI GPT-4o mini
+🤖 RAG Agent + OpenAI GPT-4o mini
 ```
 
-## 🚀 Installation Rapide
 
-### Prérequis
+## 🚀 Quick Installation
 
-- Node.js 18+ ([Télécharger](https://nodejs.org/))
-- Compte [Qdrant Cloud](https://cloud.qdrant.io/) (gratuit)
-- Clé API [OpenAI](https://platform.openai.com/api-keys)
+### Prerequisites
 
-### Étapes d'installation
+- Node.js 18+ ([Download](https://nodejs.org/))
+- [Qdrant Cloud](https://cloud.qdrant.io/) account (free)
+- [OpenAI API Key](https://platform.openai.com/api-keys)
 
-1. **Installer n8n**
+### Installation Steps
+
+1. **Install n8n**
    ```bash
    npm install -g n8n
    ```
 
-2. **Cloner ce repository**
+2. **Clone this repository**
    ```bash
-   git clone https://github.com/votre-username/rag-agent-n8n.git
+   git clone https://github.com/your-username/rag-agent-n8n.git
    cd rag-agent-n8n
    ```
 
-3. **Démarrer n8n**
+3. **Start n8n**
    ```bash
    n8n
    ```
-   Puis tapez `o` pour ouvrir dans le navigateur (http://localhost:5678)
+   Then type `o` to open in the browser (http://localhost:5678)
 
-4. **Importer le workflow**
-   - Menu Workflows → + New Workflow
-   - Cliquer sur "Import from File"
-   - Sélectionner `rag_agent.json`
+4. **Import the workflow**
+   - Go to Workflows → + New Workflow
+   - Click on "Import from File"
+   - Select `rag_agent.json`
    - Save
 
 ## ⚙️ Configuration
 
-### 1. Configurer Qdrant
+### 1. Configure Qdrant
 
-1. Créer un compte sur [Qdrant Cloud](https://cloud.qdrant.io/)
-2. Générer une clé API
-3. Créer une collection avec :
-   - **Nom** : `test_rag` (ou selon votre choix)
-   - **Dimensions** : `1536`
-   - **Métrique** : `cosine`
+1. Create an account on [Qdrant Cloud](https://cloud.qdrant.io/)
+2. Generate an API key
+3. Create a collection with:
+   - **Name**: `test_rag` (or any name you prefer)
+   - **Dimensions**: `1536`
+   - **Metric**: `cosine`
 
-### 2. Configurer les credentials dans n8n
+### 2. Configure credentials in n8n
 
-**OpenAI API :**
-- Nom : `OpenAi account`
-- API Key : Votre clé OpenAI
+**OpenAI API:**
+- Name: `OpenAi account`
+- API Key: Your OpenAI key
 
-**Qdrant API :**
-- Nom : `QdrantApi account`
-- API Key : Votre clé Qdrant
-- URL : URL de votre cluster Qdrant
+**Qdrant API:**
+- Name: `QdrantApi account`
+- API Key: Your Qdrant key
+- URL: Your Qdrant cluster URL
 
-### 3. Personnaliser les chemins de documents
+### 3. Customize document paths
 
-Dans le nœud "Read/Write Files from Disk", modifier :
+In the "Read/Write Files from Disk" node, change:
 ```
 D:/Stage_Talan_2025/fist-tast-documentation-master/**/*.*
 ```
-Vers votre dossier de documents :
+To your own document folder:
 ```
-/chemin/vers/vos/documents/**/*.*
+/path/to/your/documents/**/.
 ```
 
-## 📖 Utilisation
 
-### 1. Indexer vos documents
+## 📖 Usage
 
-1. Placer vos documents dans le dossier configuré
-2. Cliquer sur "Execute Workflow" dans le workflow d'ingestion
-3. Attendre la fin de l'indexation
+### 1. Index your documents
 
-### 2. Utiliser le chat
+1. Place your documents in the configured folder
+2. Click "Execute Workflow" in the ingestion workflow
+3. Wait for indexing to finish
 
-1. Activer le workflow principal
-2. Ouvrir l'interface de chat (webhook généré)
-3. Poser vos questions !
+### 2. Use the chat
 
-### Exemple de conversation
+1. Activate the main workflow
+2. Open the chat interface (generated webhook)
+3. Ask your questions!
+
+### Example Conversation
 
 ```
 🧑 Question : "Comment configurer l'API Qdrant ?"
 
 🤖 Réponse : Pour configurer l'API Qdrant, vous devez :
 
-1. **Créer une clé API**
-   Connectez-vous à votre compte Qdrant et accédez à la section API Keys.
+1. **Create an API Key**
+   Log in to your Qdrant account and go to the API Keys section.
 
-2. **Créer une collection**
-   - Nom : selon votre projet
-   - Dimensions : 1536 (compatible OpenAI)
-   - Métrique : cosine
+2. **Create a collection**
+   - Name: according to your project
+   - Dimensions: 1536 (OpenAI compatible)
+   - Metric: cosine
 
 **Sources :**
 - File: rag.pdf | Chunk: chunk_123 | Score: 0.95
 ```
 
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 rag-agent-n8n/
-├── README.md                # Ce fichier
-├── rag_agent.json           # Workflow n8n principal
-├── guide_rag_agent/         # Guide détaillé
+├── README.md # This file
+├── rag_agent.json # Main n8n workflow
+├── guide_rag_agent/ # Detailed guide
 ├── LICENSE/
 └── .gitignore
 ```
 
-## 🛠️ Workflow détaillé
 
-### Partie 1 : Ingestion des documents
-- **Read Files** → Lecture récursive des documents
-- **Switch** → Filtrage par type de fichier
-- **Extract** → Extraction du contenu textuel
-- **Token Splitter** → Segmentation en chunks
-- **Embeddings** → Conversion en vecteurs
-- **Qdrant Store** → Stockage dans la base vectorielle
+## 🛠️ Detailed Workflow
 
-### Partie 2 : Chat et réponses
-- **Chat Trigger** → Réception des messages
-- **AI Agent** → Orchestration intelligente
-- **Vector Search** → Recherche sémantique
-- **OpenAI Model** → Génération de réponses
-- **Memory** → Maintien du contexte
+### Part 1: Document Ingestion
+- **Read Files** → Recursively reads documents
+- **Switch** → Filters by file type
+- **Extract** → Extracts text content
+- **Token Splitter** → Splits into chunks
+- **Embeddings** → Converts to vectors
+- **Qdrant Store** → Stores vectors in database
 
-## 🎨 Personnalisation
+### Part 2: Chat and Responses
+- **Chat Trigger** → Receives chat messages
+- **AI Agent** → Smart orchestration
+- **Vector Search** → Semantic search
+- **OpenAI Model** → Generates answers
+- **Memory** → Maintains conversation context
 
-### Modifier le prompt système
+## 🎨 Customization
 
-Dans le nœud "AI Agent", vous pouvez personnaliser le message système :
+### Modify the system prompt
 
+In the "AI Agent" node, you can customize the system message:
 ```
 You are an AI assistant specialized in [YOUR DOMAIN]...
 ```
 
-### Ajouter de nouveaux types de fichiers
 
-Dans le nœud "Switch", ajouter de nouvelles conditions pour d'autres extensions.
+### Add new file types
 
-## 🔧 Dépannage
+In the "Switch" node, add new conditions for other extensions.
 
-### Problèmes courants
+## 🔧 Troubleshooting
 
-**❌ Erreur de lecture de fichiers**
-- Vérifier les chemins absolus (utiliser `/` au lieu de `\`)
-- S'assurer des droits d'accès aux fichiers
+### Common Issues
 
-**❌ Connexion Qdrant échouée**
-- Vérifier la clé API
-- Confirmer que la collection existe
-- Tester la connectivité réseau
+**❌ File read error**
+- Check absolute paths (use `/` instead of `\`)
+- Ensure file access permissions
 
-**❌ Pas de réponses du chat**
-- Vérifier que l'indexation est terminée
-- Contrôler les logs n8n pour les erreurs
-- S'assurer que OpenAI API fonctionne
+**❌ Qdrant connection failed**
+- Check your API key
+- Confirm the collection exists
+- Test network connectivity
 
-## 📊 Métriques et performances
+**❌ No chat response**
+- Ensure indexing is complete
+- Check n8n logs for errors
+- Confirm OpenAI API is working
 
-- **Chunk size** : 800 tokens (personnalisable)
-- **Overlap** : 100 tokens
-- **Limite de résultats** : 4 documents par requête
-- **Modèle** : GPT-4o mini (optimisé coût/performance)
+## 📊 Metrics & Performance
+
+- **Chunk size**: 800 tokens (customizable)
+- **Overlap**: 100 tokens
+- **Result limit**: 4 documents per query
+- **Model**: GPT-4o mini (cost-effective)
 
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! Voici comment participer :
+Contributions are welcome! Here's how to participate:
 
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. Commit vos changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
-4. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
-5. Ouvrir une Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to your branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 🙏 Remerciements
+## 🙏 Acknowledgments
 
-- [n8n](https://n8n.io/) pour la plateforme d'automatisation
-- [Qdrant](https://qdrant.tech/) pour la base vectorielle
-- [OpenAI](https://openai.com/) pour les modèles de langage
+- [n8n](https://n8n.io/) for the automation platform
+- [Qdrant](https://qdrant.tech/) for the vector database
+- [OpenAI](https://openai.com/) for the language models
 
 ## 📞 Support
 
-Si vous rencontrez des problèmes :
+If you encounter issues:
 
-1. Consultez le [guide complet](guide_rag_agent.pdf) 
+1. Refer to the [complete guide](rag_agent_guide.pdf)
 ---
 
-⭐ **N'oubliez pas de donner une étoile si ce projet vous aide !**
+⭐ **Don't forget to give a star if this project helps you!**
